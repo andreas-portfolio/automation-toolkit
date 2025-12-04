@@ -41,3 +41,22 @@
 - shutil.disk_usage for checking disk space
 
 **Next**: Thursday - Log Analyzer
+
+### Thursday
+**Goal**: Start Script #3 - Log Analyzer
+
+**Completed**:
+- CLI structure and file reading
+- Log level parsing and counting using regex
+- ERROR/CRITICAL message extraction
+
+**What I learned**:
+- Beginning the figure out regex pattrens and capture groups
+- Using .group(i) to pick out specific group
+- Regex doesn't implicitly skip parts you don't mention (duh)
+
+**Challanges**:
+- Regex is a monumental pain in the neck to figure out
+- Wrapping my head around groups.
+
+**Next**: Grouping duplicate error messages and count occurrences

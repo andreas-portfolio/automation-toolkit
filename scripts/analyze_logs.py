@@ -9,6 +9,7 @@ from collections import Counter
 
 LEVELS = ['INFO', 'WARNING', 'ERROR', 'CRITICAL', 'DEBUG']
 
+
 def extract_error_details(line):
     """Extract timestamp, level, and message from ERROR/CRITICAL lines"""
     pattern = r'(\d{4}-\d{2}-\d{2}) (\d{2}:\d{2}:\d{2}) (ERROR|CRITICAL) (.+)'
@@ -54,18 +55,49 @@ def analyze_file(filepath):
         click.echo(f"Error: File '{filepath}' not found!")
         return None, None
     
-    counts = Counter(levels)
+    grouped_errors = {}
     
+    # Extract and group errors and their timestamps
+    for error in errors:
+        message = error['message']
+        timestamp = error['timestamp']
+        
+        if message not in grouped_errors:
+            grouped_errors[message] = []
+            
+        grouped_errors[message].append(timestamp)
+    
+    result = {}
+    
+    # Count errors and save when they were first seen
+    for message, timestamps in grouped_errors.items():
+        result[message] = {
+            'count': len(timestamps),
+            'first_seen': min(timestamps)
+        }
+    
+    sorted_results = sorted(result.items(), key=lambda result: result[1]['count'], reverse=True)
+    
+    counts = Counter(levels)
+        
     # Print summary
     click.echo(f"Found {len(levels)} total log entries\n")
     for level in LEVELS:
         count = counts.get(level, 0)
         click.echo(f"- {level}: {count}")
     
-    # Print errors found
-    click.echo(f"\nFound {len(errors)} error/critical entries")
+    # Print amount of errors found
+    click.echo(f"\nFound {len(errors)} error/critical entries\n")
     
-    return counts, errors  # Return both
+    # Print which errors and when they were first seen, up to 5 to prevent clutter
+    for message, info in sorted_results[:5]:
+        click.echo(f"{message}: {info['count']} times, first seen {info['first_seen']}")
+    
+    # If the number of error messages > 5, let the user know how many without printing them all out
+    if len(sorted_results) > 5:
+        click.echo(f" ... and {len(sorted_results) - 5} more")
+    
+    return counts, result
 
 
 @click.command()

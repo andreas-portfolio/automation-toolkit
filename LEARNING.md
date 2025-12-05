@@ -60,3 +60,23 @@
 - Wrapping my head around groups.
 
 **Next**: Grouping duplicate error messages and count occurrences
+
+### Friday
+**Goal**: Complete Steps 2-4 of Log Analyzer
+
+**Completed**:
+- Log level parsing with regex (continued from Thursday)
+- Error message extraction  
+- Group duplicate errors, count occurrences, track first seen timestamp
+
+**What I learned**:
+- Grouping data with dictionaries (message as key, list of timestamps as value)
+- Lambda functions for sorting (key=lambda x: x[1]['count'])
+
+**Challenges**:
+- Got stuck on timestamp comparison logic - overcomplicated it initially
+- Needed help understanding simpler grouping approach (collect all, then process)
+
+**Energy**: Started late (13:00), 3/5
+
+**Next**: JSON and CSV output

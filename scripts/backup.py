@@ -7,21 +7,47 @@ import click
 import tarfile
 from datetime import datetime
 from pathlib import Path
+
+
+def should_exclude(tarinfo):
+    """Filter out unwanted files/directories"""
+    
+    exclude_patterns = ['__pycache__', '.git', 'venv', '.pyc', '.pytest_cache']
+    
+    for pattern in exclude_patterns:
+        if pattern in tarinfo.name:
+            return None # Exclude file
+    return tarinfo # Include file
+
+
+def prune_backups(destination, keep):
+    backup_dir = Path(destination)
+    backup_files = list(backup_dir.glob('*tar.gz'))
+    
+    # Sort backups by age
+    sorted_files = sorted(backup_files, key=lambda f: f.stat().st_mtime)
+    
+    # Prune amount of files until they are as many as 'keep' specifies
+    to_delete = sorted_files[:-keep]
+    
+    for f in to_delete:
+        f.unlink()
     
 
-def create_archive(source, destination, *keep):
+def create_archive(source, destination):
+    """Create archive and backup directory"""
+    
     source_path = Path(source)
     dest_dir = Path(destination)
 
     dest_dir.mkdir(parents=True, exist_ok=True)
     
     timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-    archive_name = f"{source_path}_{timestamp}.tar.gz"
+    archive_name = f"{source_path.name}_{timestamp}.tar.gz"
     archive_path = dest_dir / archive_name    
     
     with tarfile.open(archive_path, 'w:gz') as f:
-        f.add(source_path, arcname=source_path.name)
-        f.close()
+        f.add(source_path, arcname=source_path.name, filter=should_exclude)
         
     click.echo(f"Backup created: {archive_path}")
 
@@ -33,7 +59,8 @@ def create_archive(source, destination, *keep):
 def main(source, destination, keep):
     """Create compressed backup of directory"""
 
-    create_archive(source, destination, keep)
+    create_archive(source, destination)
+    prune_backups(destination, keep)
 
 
 if __name__ == '__main__':

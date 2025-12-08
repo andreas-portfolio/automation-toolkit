@@ -106,3 +106,14 @@
 **Energy**: [3/5]
 
 **Next**: Script #4 - Backup Automation (Days 8-9 in roadmap)
+
+### Monday (continued)
+**Started**: Script #4 - Backup Automation
+
+**Progress**: CLI structure, started compression logic
+
+**Energy**: Dropped to 2/5, stopped
+
+**Blocker**: Confused about destination directory vs archive filename
+
+**Next**: Resume Script #4

@@ -117,3 +117,27 @@
 **Blocker**: Confused about destination directory vs archive filename
 
 **Next**: Resume Script #4
+
+### Monday (Evening)
+**Goal**: Complete Script #4 - Backup Automation
+
+**Completed**:
+- Step 1: Basic tar.gz compression
+- Step 2: Timestamp naming
+- Step 3: Automatic backup pruning (keep N backups)
+
+**What I learned**:
+- tarfile module for creating compressed archives
+- datetime.strftime() for timestamp formatting
+- Path.glob() for finding files by pattern
+- Sorting files by modification time (st_mtime)
+- List slicing for cleanup (sorted[:-keep])
+- Path.name vs full Path object
+
+**Challenges**:
+- Initially confused destination directory vs archive filename
+- Needed to use .name to get just directory name for archive
+
+**Energy**: Energy a bit higher Monday evening, fresh start helped
+
+**Next**: Script #5 - GitHub Actions CI/CD

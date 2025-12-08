@@ -80,3 +80,29 @@
 **Energy**: Started late (13:00), 3/5
 
 **Next**: JSON and CSV output
+
+## Week 2
+
+### Monday
+**Goal**: Complete Steps 5-6 of Log Analyzer (file output)
+
+**Completed**:
+- Step 5: JSON output with json.dump()
+- Step 6: CSV output with csv.DictWriter
+- Full log analyzer tool finished
+
+**What I learned**:
+- json.dump() for writing dicts to files (indent parameter for readability)
+- csv.DictWriter() expects flat dicts, not nested structures
+- writerow() takes a dict with keys matching fieldnames
+- pathlib.Path.stem for extracting filename without extension
+- Transforming nested dict structure for CSV format
+
+**Challenges**:
+- CSV writerow() confusion - was passing list instead of dict
+- Understanding that message key needed to become a dict value for CSV
+- Filename generation (first idea was to slice but wasn't robust, needed .stem)
+
+**Energy**: [3/5]
+
+**Next**: Script #4 - Backup Automation (Days 8-9 in roadmap)

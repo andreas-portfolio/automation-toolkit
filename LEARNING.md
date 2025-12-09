@@ -141,3 +141,29 @@
 **Energy**: Energy a bit higher Monday evening, fresh start helped
 
 **Next**: Script #5 - GitHub Actions CI/CD
+
+### Tuesday
+**Goal**: Complete Script #5 - GitHub Actions CI/CD
+
+**Completed**:
+- Wrote pytest tests for backup script (prune, create_archive, CLI)
+- Created GitHub Actions workflow (.github/workflows/automation-toolkit.yml)
+- Set up automated testing on push/PR
+- Added flake8 linting to workflow
+
+**What I learned**:
+- pytest basics (assert statements, test functions)
+- pytest fixtures (tmp_path for isolated test directories)
+- Click.testing.CliRunner for testing CLI apps
+- GitHub Actions YAML structure (jobs, steps, runs-on)
+- How to trigger workflows (on push/pull_request)
+- Setting up Python environment in Actions
+
+**Challenges**:
+- Learning pytest syntax and fixture usage
+- Understanding YAML indentation rules
+- Getting tests to run in isolated environments
+
+**Energy**: 2/5
+
+**Next**: Days 12-14 - Polish and documentation

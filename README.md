@@ -115,3 +115,9 @@ pytest --cov=scripts
 - pytest (testing)
 - GitHub Actions (CI/CD)
 - Libraries: tarfile, csv, json, pathlib, subprocess, datetime, sys, shutil, re
+
+
+## Future Enhancements
+- Add input validation for project names
+- Expand test coverage for analyze_logs, validate_env and setup_projects.py
+- Add demo video/GIFs

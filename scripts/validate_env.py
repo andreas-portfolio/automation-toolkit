@@ -13,6 +13,16 @@ import shutil
 from datetime import datetime
 
 def log_result(res, verbose):
+    """Append result to validation.log file.
+
+    Args:
+        res (str): String to append to log file
+        verbose (bool): If True, include timestamp in log entry
+        
+    Returns:
+        None
+    """
+    
     timestamp = datetime.now().replace(microsecond=0)
     if verbose:
         with open("validation.log", "a") as file:
@@ -23,7 +33,18 @@ def log_result(res, verbose):
             if res:
                 file.write(res)
 
+
 def validate_python(log=None, verbose=None):
+    """Validate Python installation and version.
+
+    Args:
+        log (bool, optional): If True log results. Defaults to None.
+        verbose (bool, optional): If True include timestamps. Defaults to None.
+
+    Returns:
+        int: Returns 1 if PASSED returns 0 if FAILED
+    """
+    
     res = sys.version_info.major, sys.version_info.minor, sys.version_info.micro
     formated_res = f"Python version {res[0]}.{res[1]}.{res[2]} (required: 3.9+)\n"
     
@@ -38,7 +59,18 @@ def validate_python(log=None, verbose=None):
             log_result("Failed: " + str(formated_res), verbose)
         return 0
 
+
 def validate_git(log=None, verbose=None):
+    """Validate if Git is installed and which version.
+
+    Args:
+        log (bool, optional): If True log results. Defaults to None.
+        verbose (bool, optional): If True include timestamps. Defaults to None.
+
+    Returns:
+        int: Returns 1 if PASSED returns 0 if FAILED
+    """
+    
     try:
         res = subprocess.run(["git", "--version"], capture_output=True, text=True).stdout
         formated_res = f"{res.capitalize()}"
@@ -52,7 +84,18 @@ def validate_git(log=None, verbose=None):
             log_result("Failed: " + str(formated_res), verbose)
         return 0
 
+
 def validate_docker_installed(log=None, verbose=None):
+    """Validate Docker installed
+
+    Args:
+        log (bool, optional): If True log results. Defaults to None.
+        verbose (bool, optional): If True include timestamps. Defaults to None.
+
+    Returns:
+        int: Returns 1 if PASSED returns 0 if FAILED
+    """
+    
     try:
         res_installed = subprocess.run(["docker", "--version"], capture_output=True, text=True).stdout        
         formated_installed = res_installed.capitalize()
@@ -67,8 +110,19 @@ def validate_docker_installed(log=None, verbose=None):
         if log:
             log_result("Failed: Docker not found.\n", verbose)
         return 0
-    
+
+
 def validate_docker_running(log=None, verbose=None):
+    """Validate Docker running
+
+    Args:
+        log (bool, optional): If True log results. Defaults to None.
+        verbose (bool, optional): If True include timestamps. Defaults to None.
+
+    Returns:
+        int: Returns 1 if PASSED returns 0 if FAILED
+    """
+    
     res_running = subprocess.run(["docker", "ps"], capture_output=True, text=True)
     
     if res_running.returncode == 0:
@@ -82,7 +136,18 @@ def validate_docker_running(log=None, verbose=None):
             log_result("Failed: Docker is not running.\n", verbose)
         return 0
 
+
 def validate_disk_space(log=None, verbose=None):
+    """Validate disk space
+
+    Args:
+        log (bool, optional): If True log results. Defaults to None.
+        verbose (bool, optional): If True include timestamps. Defaults to None.
+
+    Returns:
+        int: Returns 1 if PASSED returns 0 if FAILED
+    """
+    
     res = shutil.disk_usage("./").free
     converted = res/1024**3
     formated_res = f"Disk space: {int(converted)}GB (required: >10GB)\n"
@@ -98,9 +163,10 @@ def validate_disk_space(log=None, verbose=None):
             log_result("Failed: " + str(formated_res), verbose)
         return 0
 
+
 @click.command()
-@click.option('--log', default=None, is_flag=True, help='Create a log file.')
-@click.option('--verbose', default=None, is_flag=True, help='Includes timestamps in log file.')
+@click.option('--log', '-l', default=None, is_flag=True, help='Create a log file.')
+@click.option('--verbose', '-v', default=None, is_flag=True, help='Includes timestamps in log file.')
 def main(log, verbose):
     """Validate development environment setup"""
     

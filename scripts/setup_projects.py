@@ -2,14 +2,24 @@
 Project Setup Script
 Creates new Python projects with proper structure
 """
-
+# TODO: Validate input variables to prevent crashes, etc.
+    
 import click
 from pathlib import Path
 
-def create_readme_template(project_name, project_type):
-    """Generate README content"""
-    return f"""# {project_name}
 
+def create_readme_template(project_name, project_type):
+    """Generate README content
+
+    Args:
+        project_name (str): Name of project
+        project_type (str): Type of project
+
+    Returns:
+        str: Returns preformated README content
+    """
+
+    return f"""# {project_name}
 Description of your project here.
 
 ## Installation
@@ -34,8 +44,10 @@ python src/main.py
 ```
 """
 
+
 def create_gitignore_template():
     """Generate .gitignore content"""
+    
     return """# Python
 __pycache__/
 *.py[cod]
@@ -59,8 +71,17 @@ env/
 Thumbs.db
 """
 
+
 def create_requirements_template(project_type):
-    """Generate requirements.txt based on project type"""
+    """Generate requirements.txt based on project type
+
+    Args:
+        project_type (str): Type of project
+
+    Returns:
+        str: A string containing the contents of a requirements.txt file
+    """
+    
     base = "pytest>=7.0.0\n"
     
     if project_type == "api":
@@ -70,8 +91,17 @@ def create_requirements_template(project_type):
     else:
         return base
 
+
 def create_project_structure(project_name, project_type):
-    """Create the directory structure for a new project"""
+    """Create the directory structure for a new project
+
+    Args:
+        project_name (str): Name of project
+        project_type (str): Type of project
+
+    Returns:
+        bool: Returns True on success, else False
+    """
     
     base_path = Path(project_name)
     
@@ -102,12 +132,11 @@ def create_project_structure(project_name, project_type):
         
     return True
 
-@click.command()
-@click.option('--name', prompt='Project name', help='Name of the project.')
-@click.option('--type', default='basic', help='Project type: basic, api, cli')
 
+@click.command()
+@click.option('--name', '-n', prompt='Project name', help='Name of the project.')
+@click.option('--type', '-t', default='basic', help='Project type: basic, api, cli')
 def main(name, type):
-    """Create a new Python project with proper structure."""
     click.echo(f"Creating project: {name}!")
     click.echo(f"Type: {type}\n")
     
@@ -116,6 +145,7 @@ def main(name, type):
         click.echo(f"Location: ./{name}/")
     else:
         click.echo("Project creation failed!")
+
 
 if __name__ == '__main__':
     main()

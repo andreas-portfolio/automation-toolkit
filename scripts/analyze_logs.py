@@ -1,6 +1,6 @@
 """
 Log Analyzer
-A tool used to parse application log files to extract useful information such as which errors have occured and how many.
+A tool used to parse application log files to extract useful information such as which errors have occured and how many
 """
 
 import click
@@ -13,7 +13,16 @@ from pathlib import Path
 LEVELS = ['INFO', 'WARNING', 'ERROR', 'CRITICAL', 'DEBUG']
 
 def save_report(input_file, result, output_format):
-    """Save report to file"""
+    """Write report to file
+
+    Args:
+        input_file (str): File to be analyzed
+        result (dict): Dictionary containing results
+        output_format (str): Format of the output file
+        
+    Returns:
+        None
+    """
     
     # Generate output filename
     input_path = Path(input_file)
@@ -48,12 +57,19 @@ def save_report(input_file, result, output_format):
         click.echo(f"Unknown format: {output_format}")
         return
         
-    click.echo(f"Report saved to: {output_file}")
+    click.echo(f"\nReport saved to: {output_file}")
     
     
 
 def extract_error_details(line):
-    """Extract timestamp, level, and message from ERROR/CRITICAL lines"""
+    """Extract timestamp, level, and message from ERROR/CRITICAL lines
+
+    Args:
+        line (str): Current line being processed in file
+
+    Returns:
+        str: Returns formated string extracted from Match() object, else returns None
+    """
     
     pattern = r'(\d{4}-\d{2}-\d{2}) (\d{2}:\d{2}:\d{2}) (ERROR|CRITICAL) (.+)'
     match = re.search(pattern, line)
@@ -68,7 +84,14 @@ def extract_error_details(line):
 
 
 def match_level(line):
-    """Extract log level from a line"""
+    """Extract log level from a line
+
+    Args:
+        line (str): Current line being processed in file
+
+    Returns:
+        str: Returns extracted string from Match() object, else returns None
+    """
     
     pattern = r'INFO|WARNING|ERROR|CRITICAL|DEBUG'
     match = re.search(pattern, line)
@@ -78,11 +101,18 @@ def match_level(line):
 
 
 def analyze_file(filepath):
-    """Read file and count log levels"""
+    """Read file and count log levels
+
+    Args:
+        filepath (str): File to be read
+
+    Returns:
+        dict: Returns dictionary containing results
+    """
     
     levels = []
     errors = [] 
-    
+
     try:
         with open(filepath, 'r') as file:
             for line in file:

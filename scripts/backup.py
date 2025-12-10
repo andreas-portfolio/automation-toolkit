@@ -10,7 +10,14 @@ from pathlib import Path
 
 
 def should_exclude(tarinfo):
-    """Filter out unwanted files/directories"""
+    """Filter out unwanted files/directories
+
+    Args:
+        tarinfo (TarInfo): TarInfo object containing details of what is about to be archived
+
+    Returns:
+        TarInfo: The tarinfo object if file should be included, None if excluded
+    """    
     
     exclude_patterns = ['__pycache__', '.git', 'venv', '.pyc', '.pytest_cache']
     
@@ -21,6 +28,16 @@ def should_exclude(tarinfo):
 
 
 def prune_backups(destination, keep):
+    """Prune number of backups (default: 5)
+
+    Args:
+        destination (str): Path to backup directory
+        keep (int): Number of backup files to keep
+    
+    Returns:
+        None
+    """
+    
     backup_dir = Path(destination)
     backup_files = list(backup_dir.glob('*tar.gz'))
     
@@ -35,7 +52,15 @@ def prune_backups(destination, keep):
     
 
 def create_archive(source, destination):
-    """Create archive and backup directory"""
+    """Create archive and backup directory
+
+    Args:
+        source (str): Directory user wishes to backup
+        destination (str): Directory where the user wishes the backup to be stored
+        
+    Returns:
+        None
+    """
     
     source_path = Path(source)
     dest_dir = Path(destination)
